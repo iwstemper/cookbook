@@ -1,0 +1,19 @@
+@use '../../global';
+
+.topNav{
+    box-sizing: border-box;
+    padding: 2rem;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    height: 8vh;
+    width: 100%;
+    background-color: global.$primaryColor;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button{
+        @include global.contrastButtonStyle
+    }
+}

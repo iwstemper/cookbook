@@ -1,0 +1,49 @@
+$primaryColor: orange;
+$secondaryColor: gray;
+$accentTextColor: white;
+
+@mixin labelFont{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+@mixin inputFont{
+    font-size: 1.2rem;
+    color: $secondaryColor;
+}
+
+@mixin buttonStyle{
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 20px;
+    padding: .5rem 1rem;
+    border: 0;
+    background-color: $primaryColor;
+    color: $accentTextColor;
+}
+
+@mixin contrastButtonStyle{
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: .5rem 1rem;
+    color: $primaryColor;
+    background: $accentTextColor;
+    border: 0;
+    border-radius: 20px;
+}
+
+@mixin formGroup{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: .75rem;
+    label{
+        @include labelFont;
+    }
+    input, textarea, select{
+        border-radius: 10px;
+        padding: .5rem;
+        @include inputFont;
+    }
+}

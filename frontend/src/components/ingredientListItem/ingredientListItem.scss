@@ -1,0 +1,18 @@
+.recipe_ingredientRow{
+    margin: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    .recpie_ingredientRowImage{
+        width: 1rem;
+        background-color: white;
+    }
+    .recipe_ingredientRowName{
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+}
+.recipe_ingredientRow::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+}

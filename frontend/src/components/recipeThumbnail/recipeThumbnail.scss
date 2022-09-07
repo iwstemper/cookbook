@@ -1,0 +1,34 @@
+.recipe_headerImage{
+    width: 100%;
+    position: relative;
+    font-size: 2rem;
+    img{
+        width: 100%;
+        box-shadow: 0 4px 2px -200px gray;
+    }
+    .recipe_headerImageDetails{
+        position: absolute;
+        bottom: 1rem;
+        color: white;
+        padding: .5rem;
+        width: 95%;
+        .recipe_headerFlexLine{
+            display: flex;
+            justify-content: center;
+            gap: .5rem;
+            .recipe_headerFlexItem{
+                span{
+                    font-size: 1.2rem;
+                    margin-left: .25rem;
+                }
+            }
+        }
+        .recipe_headerFlexLine.recpie_headerFlexLineButtonRow{
+            justify-content: space-between;
+            margin: auto;
+            width: 95%;
+            font-size: 1.5rem;
+            color: gray;
+        }
+    }
+}

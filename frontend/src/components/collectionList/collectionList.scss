@@ -1,0 +1,74 @@
+@use '../../global';
+
+.profile_collectionList{
+    margin-top: 3rem;
+    .profile_collectionListHeader{
+        height: 2rem;
+        background-color: global.$secondaryColor;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        .profile_collectionSearchInput{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            .profile_collectionSearch{
+                fill: global.$accentTextColor;
+                height: 50%;
+                margin-right: .5rem;
+            }
+            #collection_searchInput{
+                background-color: transparent;
+                border: 0;
+                color: global.$accentTextColor;
+                font-size: 1.2rem;
+                padding: .5rem;
+                width: 75%;
+                outline: none;
+            }
+        }
+        .profile_collectionHeaderRightContent{
+            color: global.$accentTextColor;
+            font-size: .75rem;
+            font-weight: bold;
+            width: 40%;
+            text-align: center;
+        }
+    }
+    
+    .collectionListItem{
+        position: relative;
+        box-sizing: border-box;
+        img{
+            position: absolute;
+            width: 100%;
+            height: 6rem;
+            z-index: -1;
+        }
+        .collectionItem_content{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;            
+            color: global.$accentTextColor;
+            height: 6rem;
+            .collectionItem_name{
+                font-size: 2rem;
+                font-weight: bold;
+                padding-left: .5rem;
+            }
+            .collectionItem_rightContent{
+                text-align: center;
+                font-size: 1.2rem;
+                display: flex;
+                padding-right: 1rem;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 700px) {
+    .profile_collectionList{
+        width: 80%
+    }
+}

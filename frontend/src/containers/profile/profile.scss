@@ -1,0 +1,36 @@
+@use '../../global';
+
+.profile_userHero{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 10vh;
+    img{
+        border-radius: 100px;
+    }
+    .profile_userHeroField{
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    .profile_userHeroEdit{
+        @include global.buttonStyle
+    }
+    .profile_userHeroStats{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        p{
+            text-align: center;
+        }
+        .profile_userHeroStatNumber{
+            font-size: 3rem;
+            color: global.$primaryColor;
+        }
+        .profile_userHeroStatLabel{
+            font-size: 1.5rem;
+            color: global.$secondaryColor
+        }
+    }
+}
+

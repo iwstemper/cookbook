@@ -1,0 +1,19 @@
+.shoppingList_recipeHeader{
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem;
+
+}
+.shoppingList_ingredientsList{
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    .shoppingList_ingredientsNameContainer{
+        display: flex;
+        gap: 1rem;
+        max-width: 75%;
+        p{
+            overflow: hidden;
+        }
+    }
+}
