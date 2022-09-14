@@ -3,23 +3,30 @@ const express = require('express');
 const recipeRouter = express.Router()
 const Recipe = require('../models/Recipe')
 
+//Gets recipes based on query
 recipeRouter.get('/', (req,res) => {
     const reqFilters = JSON.parse(req.query.filters)
     let queryFilters = {}
+    
     if(reqFilters.search){
         queryFilters.recipeName = {"$regex": reqFilters.search, "$options": "i"}
     }
-    if(reqFilters.ingredient){
-        queryFilters['ingredients.ingredientName'] = {"$regex": reqFilters.ingredient, "$options": "i"}
+    if(reqFilters.ingredients){
+        queryFilters['ingredients.ingredientName'] = {"$regex": reqFilters.ingredients, "$options": "i"}
     }
     console.log(queryFilters)
     Recipe.find(queryFilters).exec((err, result) => {
+        if (err){
+            console.log(err)
+            res.send(err)
+        }
         console.log(result)
-        res.json(result)
+        res.send(result)
     })
     
 })
 
+//Add new recipe
 recipeRouter.post('/', (req,res) => {
     const newRecipe = req.body.inputs
     const recipe = new Recipe(
@@ -34,18 +41,17 @@ recipeRouter.post('/', (req,res) => {
         if (err){
             console.log(err)
         }
-        console.log(result)
         res.send(result)
     })
 })
 
+//Query single recipe
 recipeRouter.get('/:id', (req,res) => {
     const id = req.params.id
     Recipe.findOne({_id: id}, (err, record) => {
         if (err){
             console.log(err)
         }
-        console.log(record)
         res.json(record)
     })
 })

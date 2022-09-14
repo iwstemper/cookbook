@@ -2,73 +2,117 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import './collectionList.scss'
 import { SearchIcon } from "../../assets/images";
+import {CollectionListItem} from './CollectionListItem'
 
-export default function CollectionList({user, recipe, parentRequest, popup, setPopup}){
+export default function CollectionList({user, collections, getCollections, recipe, parentRequest, popup, setPopup, getMealPlans, mealPlans}){
 
-    const [collections, setCollections] = useState()
+
     const [searchInput, setSearchInput] = useState('')
 
-    function getCollections(){
-        axios
-        .get(`http://localhost:5010/collections/user/${user.email}`)
-        .then(res => {setCollections(res.data)})
-        .catch(err => console.log(err))
-    }
-
+    //VIEW COLLECTION PARENT REQUEST//////////////////////////////
     function collectionItemClick(item){
-        if (parentRequest === 'addToCollection'){
+        if (parentRequest === 'add'){
             addToCollection(item._id)
         }
+        else if (parentRequest === 'viewCollection'){
+
+        }
     }
+        //VIEW COLLECTION PARENT REQUEST//////////////////////////////
+        function mealPlanItemClick(item){
+            if (parentRequest === 'add'){
+                addToMealPlan(item._id)
+            }
+            else if (parentRequest === 'viewCollection'){
+    
+            }
+        }
 
     function addToCollection(id){
         axios
-        .put(`http://localhost:5010/collections/${id}`, {inputs: recipe})
-        .then(res => console.log(res))
-        .then(() => setPopup(!popup))
+        .put(`http://localhost:5010/collections/${id}`, {inputs: {recipe: recipe, operation: 'add'}})
+        .then(() => getCollections())
+        .then(() => setPopup(prev => {return {...prev, active: !popup.active}}))
+        .catch(err => console.log(err))
     }
-
-    function saveCollection(){
+    function addCollection(){
+        let name = window.prompt()
         axios
-        .post('http://localhost:5010/collections', {inputs: collection})
-        .then(res => console.log(res))
+        .post(`http://localhost:5010/collections/${user.email}`, {inputs: name})
+        .then(() => getCollections())
+        .catch(err => console.log(err))
+    }
+    function removeCollection(id){
+        axios
+        .delete(`http://localhost:5010/collections/${id}`)
+        .then(() => getCollections())
         .catch(err => console.log(err))
     }
 
-    useEffect(getCollections, [user])
+    function addToMealPlan(id){
+        axios
+        .put(`http://localhost:5010/mealPlans/${id}`, {inputs: {recipe: recipe, operation: 'add'}})
+        .then(() => getMealPlans())
+        .then(() => setPopup(prev => {return {...prev, active: !popup.active}}))
+        .catch(err => console.log(err))
+    }
+    function addMealPlan(){
+        let name = window.prompt()
+        axios
+        .post(`http://localhost:5010/mealPlans/${user.email}`, {inputs: name})
+        .then(() => getMealPlans())
+        .then(() => setPopup(prev => {return {...prev, active: !popup.active}}))
+        .catch(err => console.log(err))
+    }
+    function removeMealPlan(id){
+        axios
+        .delete(`http://localhost:5010/mealPlans/${id}`)
+        .then(() => getCollections())
+        .catch(err => console.log(err))
+    }
 
-    const collectionRow = collections?.filter(col => col.collectionName.toLowerCase().includes(searchInput.toLowerCase())).map((item, index) => {
+    let collectionRow = collections?.filter(col => col.collectionName.toLowerCase().includes(searchInput.toLowerCase())).map((item, index) => {
+            return(
+                    <CollectionListItem item={item} collectionType={'collection'} collectionItemClick={collectionItemClick}/>
+            )
+        })   
+
+    let mealPlanRow = mealPlans?.filter(mealPlan => mealPlan.mealPlanName.toLowerCase().includes(searchInput.toLowerCase())).map((item, index) => {
         return(
-                <div className='collectionListItem' onClick={() => collectionItemClick(item)} key={item._id}>
-                    <img src='' style={{backgroundColor: 'black'}} />
-                    <div className='collectionItem_content'>
-                        <p className='collectionItem_name'>{item.collectionName}</p>
-                        <div className='collectionItem_rightContent'>
-                            <div className='collectionItem_recipeCount'>
-                                <p>{item.recipes.length}</p>
-                                <p>recipes</p>
-                            </div>
-                            <p>^</p>
-                        </div>
-
-                    </div>
-                </div>
+            <CollectionListItem item={item} collectionType={'mealPlan'} mealPlanItemClick={mealPlanItemClick}/>
         )
     })
     
-
-    return(
-        <div className='profile_collectionList'>
-            <div className='profile_collectionListHeader'>
-                <div className='profile_collectionSearchInput'>
-                    <SearchIcon height='100%' className='profile_collectionSearch'/>
-                    <input name='searchInput' id='collection_searchInput' value={searchInput} onChange={e => setSearchInput(e.target.value)} />
+    if (popup.popupContent === 'collections' || !popup.popupContent){
+        return(
+            <div className='profile_collectionList'>
+                <div className='profile_collectionListHeader'>
+                    <div className='profile_collectionSearchInput'>
+                        <SearchIcon height='100%' className='profile_collectionSearch'/>
+                        <input name='searchInput' id='collection_searchInput' value={searchInput} onChange={e => setSearchInput(e.target.value)} />
+                    </div>
+                    <div className='profile_collectionHeaderRightContent' onClick={() => addCollection()}>
+                        <p>+ New Collection</p>
+                    </div>
                 </div>
-                <div className='profile_collectionHeaderRightContent' onClick={() => getCollections()}>
-                    <p>+ New Collection</p>
-                </div>
+                {collectionRow}
             </div>
-            {collectionRow}
-        </div>
-    )
+        )
+    }
+    else if (popup.popupContent === 'mealPlans'){
+        return(
+            <div className='profile_collectionList'>
+                <div className='profile_collectionListHeader'>
+                    <div className='profile_collectionSearchInput'>
+                        <SearchIcon height='100%' className='profile_collectionSearch'/>
+                        <input name='searchInput' id='collection_searchInput' value={searchInput} onChange={e => setSearchInput(e.target.value)} />
+                    </div>
+                    <div className='profile_collectionHeaderRightContent' onClick={() => addMealPlan()}>
+                        <p>+ New Meal Plan</p>
+                    </div>
+                </div>
+                {mealPlanRow}
+            </div>
+        )
+    }
 }

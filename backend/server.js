@@ -11,6 +11,9 @@ const Recipe = require('./models/Recipe')
 //Route imports
 const recipeRouter = require('./routes/recipe')
 const collectionRouter = require('./routes/collection')
+const shoppingListRouter = require('./routes/shoppingList')
+const mealPlanRouter = require('./routes/mealPlan')
+const favoritesRouter = require('./routes/favorites')
 
 //Server variables
 const PORT = process.env.PORT || 5010
@@ -32,61 +35,10 @@ db.on('error', console.error.bind('DB connection error'))
 
 app.use('/recipe', recipeRouter)
 app.use('/collections', collectionRouter)
-
-// app.post('/recipe', (req,res) => {
-//     const newRecipe = req.body.inputs
-//     const recipe = new Recipe(
-//         {
-//             recipeName: newRecipe.recipeName, dishType: newRecipe.dishType, cuisineType: newRecipe.cuisineType,
-//             prepTime: newRecipe.prepTime, cookTime: newRecipe.cookTime, instructions: newRecipe.instructions,
-//             ingredients: newRecipe.ingredients, notes: newRecipe.notes
-//         }
-//     )
-    
-//     recipe.save((err, result) => {
-//         if (err){
-//             console.log(err)
-//         }
-//         console.log(result)
-//         res.send(result)
-//     })
-// })
+app.use('/shoppingList', shoppingListRouter)
+app.use('/mealPlans', mealPlanRouter)
+app.use('/favorites', favoritesRouter)
 
 
-// app.get('/recipe', (req,res) => {
-//     const reqFilters = JSON.parse(req.query.filters)
-//     let queryFilters = {}
-//     if(reqFilters.search){
-//         queryFilters.recipeName = {"$regex": reqFilters.search, "$options": "i"}
-//     }
-//     if(reqFilters.ingredient){
-//         queryFilters['ingredients.ingredientName'] = {"$regex": reqFilters.ingredient, "$options": "i"}
-//     }
-//     console.log(queryFilters)
-//     Recipe.find(queryFilters).exec((err, result) => {
-//         console.log(result)
-//         res.json(result)
-//     })
-    
-// })
-
-// app.get('/recipe/:id', (req,res) => {
-//     const id = req.params.id
-//     Recipe.findOne({_id: id}, (err, record) => {
-//         if (err){
-//             console.log(err)
-//         }
-//         console.log(record)
-//         res.json(record)
-//     })
-// })
-
-
-
-
-
-
-
-
-
+//Initialize server
 app.listen(PORT, () => console.log(`Server running on ${PORT}`))

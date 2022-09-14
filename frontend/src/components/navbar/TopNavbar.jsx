@@ -1,14 +1,22 @@
 import {useState} from 'react'
 import './topNavbar.scss'
 import {useAuth0} from '@auth0/auth0-react'
+import axios from 'axios'
 
 function TopNavbar(){
 
     const {user, isLoading, loginWithRedirect, logout} = useAuth0()
 
+    function registerCart(){
+        axios
+        .post(`http://localhost:5010/shoppingList/${user.email}`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
+
     return(
         <div className='topNav'>
-            <p>Logo</p>
+            <p onClick={() => registerCart()}>Logo</p>
             {!user && !isLoading &&
             <button onClick={loginWithRedirect}>Login</button>
             }

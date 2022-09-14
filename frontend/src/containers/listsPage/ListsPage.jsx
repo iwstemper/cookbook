@@ -2,7 +2,7 @@ import {useState} from 'react'
 import './listsPage.scss'
 import {RecipeList, ShoppingList} from '../../containers'
 
-function ListsPage({shoppingCart, recipeList, updateShoppingCart}) {
+function ListsPage({recipeList, shoppingList, updateShoppingList}) {
 
   const [selectedPage, setSelectedPage] = useState('Recipes')
 
@@ -18,7 +18,7 @@ function ListsPage({shoppingCart, recipeList, updateShoppingCart}) {
           <p style={selectedPage === 'Shopping List' ? selectedStyles : null} onClick={e => setSelectedPage(e.target.innerText)}>Shopping List</p>
         </div>
         {selectedPage === 'Recipes' && <RecipeList recipeList={recipeList}/>}
-        {selectedPage === 'Shopping List' && <ShoppingList shoppingCart={shoppingCart} updateShoppingCart={updateShoppingCart}/>}
+        {selectedPage === 'Shopping List' && <ShoppingList shoppingList={shoppingList} updateShoppingList={updateShoppingList}/>}
     </div>
   )
 }

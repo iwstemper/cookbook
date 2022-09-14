@@ -4,9 +4,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 import ProfileHero from './ProfileHero';
 import {CollectionList} from '../../components'
 
-function Profile(){
+function Profile({collections, getCollections}){
 
     const {user, isLoading} = useAuth0()
+    const [popup, setPopup] = useState({active: false, popupContent: ''})
     
 
     if (isLoading){
@@ -29,7 +30,9 @@ function Profile(){
         return(
             <div className='page_content'>
                 <ProfileHero user={user} />
-                <CollectionList user={user} />
+                {collections &&
+                <CollectionList user={user} collections={collections} getCollections={getCollections} popup={popup} setPopup={setPopup}/>
+                }
             </div>
         )
     }

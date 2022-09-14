@@ -2,10 +2,10 @@ import './recipeThumbnail.scss'
 import { useNavigate } from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {PlusIcon} from '../../assets/images/index'
+import axios from 'axios'
 
-function RecipeThumbnail({recipe, componentOrigin, updateRecipes, recipeList}) {
+function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavorites, user, recipeResults, setResults}) {
 
-    const [isSaved, setIsSaved] = useState()
     
     const navigator = useNavigate()
 
@@ -16,23 +16,32 @@ function RecipeThumbnail({recipe, componentOrigin, updateRecipes, recipeList}) {
         }
     }
 
-    const setInitialSavedState = () => {
-        let savedState = false;
-        Object.keys(recipeList).forEach(key => {
-            recipeList[key].forEach(arrayItem => {
-                if (arrayItem._id === recipe._id){
-                    savedState = true
-                }
-            })
-        })
-        setIsSaved(savedState)
+    function updateFavorites(operation){
+        axios
+        .post(`http://localhost:5010/favorites/${user.name}`, {recipeID: recipe._id, operation: operation})
+        .then(() => getFavorites())
+        .then(() => getRecipe())
+        .catch(err => console.log(err))
     }
 
-    useEffect(setInitialSavedState, [])
-
-    const updateRecipeLists = (operation, recipe) => {
-        setIsSaved(!isSaved)
-        updateRecipes(operation, recipe)
+    function getRecipe(){
+        axios
+        .get(`http://localhost:5010/recipe/${recipe._id}`)
+        .then(res => {
+            if (componentOrigin === 'searchResults'){
+                let list = recipeResults.map(item => {
+                    if (item._id === recipe._id){
+                        return res.data
+                    }
+                    return item
+                })
+                setResults(list)
+            }
+            else if (componentOrigin === 'recipePage'){
+                setRecipe(res.data)
+            }
+        })
+        .catch(err => console.log(err))
     }
 
     return(
@@ -44,8 +53,14 @@ function RecipeThumbnail({recipe, componentOrigin, updateRecipes, recipeList}) {
                         <div className='recipe_headerFlexItem'>
                             <p>Ian Stemper</p>
                         </div>
-                        {isSaved &&<PlusIcon className='addRecipe_icon' style={{width: '2rem'}} fill='gray' onClick={() => updateRecipeLists('removeRecipe', recipe)}/>}
-                        {!isSaved &&<PlusIcon className='addRecipe_icon' style={{width: '2rem'}} fill='#19a2b1' onClick={() => updateRecipeLists('addRecipeAll', recipe)}/>}
+                        <div style={{position: 'relative', width: '15%'}}>
+                            <div style={{zIndex: 1, position: 'absolute', color: 'gray', bottom: 2, right: 0, backgroundColor: 'white', fontSize: '.5rem', fontWeight: 'bold', padding: '.5rem', borderRadius: '50%'}}>{recipe.favorites}</div>
+                            {favorites?.find(item => item.recipeID === recipe._id) ?
+                            <PlusIcon className='addRecipe_icon' style={{width: '3rem', position: 'absolute', bottom:5, left: 0}} fill='gray' onClick={() => updateFavorites('remove')}/>
+                            :
+                            <PlusIcon className='addRecipe_icon' style={{width: '3rem', position: 'absolute', bottom:5, left: 0}} fill='#19a2b1' onClick={() => updateFavorites('add')}/>
+                            }
+                        </div>
                     </div>
                     {
                         componentOrigin === 'recipePage' &&

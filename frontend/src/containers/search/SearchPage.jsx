@@ -8,7 +8,7 @@ function SearchPage(){
     const [searchInput, setSearchInput] = useState('')
     const [displaySearch, setDisplaySearch] = useState(true)
     const [ingredientsSearch, setIngredientsSearch] = useState([])
-    const ingredients = ['Turtle', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test']
+    const ingredients = ['Turtle', 'beef', 'pig']
 
     const navigator = useNavigate()
 
@@ -61,7 +61,7 @@ function SearchPage(){
                     })}
                 </div>
             </div>
-            <button onClick={() => goToSearch('search', searchInput)} style={{bottom: ingredientsSearch.length > 0 ? '33%' : '-5%', position: 'absolute', transition: '1s', margin: 'auto'}}>nav</button>
+            <button onClick={() => goToSearch('ingredients', ingredientsSearch)} style={{bottom: ingredientsSearch.length > 0 ? '33%' : '-5%', position: 'absolute', transition: '1s', margin: 'auto'}}>nav</button>
             
         </div>
     )

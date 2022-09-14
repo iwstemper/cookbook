@@ -4,13 +4,15 @@ import {useState, useEffect} from 'react'
 import {CollectionList} from '../'
 import { XIcon } from '../../assets/images'
 
-function Popup({popup, user, recipe, setPopup, parentRequest}) {
-
+function Popup({popup, user, recipe, setPopup, parentRequest, collections, getCollections, mealPlans, getMealPlans}) {
 
   return (
-    <div className='popupMenu' style={{height: popup ? '95%' : '0%'}}>
-        <XIcon className='popup_closeIcon' onClick={() => setPopup(!popup)} />
-        <CollectionList user={user} recipe={recipe} parentRequest={parentRequest} popup={popup} setPopup={setPopup}/>
+    <div className='popupMenu' style={{height: popup.active ? '95%' : '0%'}}>
+        <XIcon className='popup_closeIcon' onClick={() => setPopup({active: !popup.active, popupContent: popup.popupContent})} />
+        <CollectionList 
+          user={user} recipe={recipe} parentRequest={parentRequest} popup={popup} setPopup={setPopup} 
+          collections={collections} getCollections={getCollections} getMealPlans={getMealPlans} mealPlans={mealPlans}
+        />
     </div>
   )
 }

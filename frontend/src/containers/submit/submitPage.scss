@@ -4,26 +4,31 @@
     margin: 1rem;
     h1{
         text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    h1:before,
+    h1:after {
+    background: black;
+    height: 2px;
+    flex: 1;
+    content: '';
     }
     .submitPage_form{
-        width: 80%;
+        width: 95%;
         margin: 1rem auto;
+        min-height: 60vh;
+        .submitPage_headers{
+            width: 80%;
+            margin: auto
+        }
         .submitPage_formGroup{
             @include global.formGroup;
             .submit_ingredientsRow{
-                display: flex;
-                justify-content: space-between;
-                input, p{
-                    width: 25%;
-                    vertical-align: bottom;
-                }
-                div{
-                    width: 10%;
-                }
-                p{
-                    @include global.labelFont;
-                    margin-top: auto;
-                }
+                display: grid;
+                grid-template-columns: repeat(2, 15%) 50% 20%;
+                column-gap: .5rem;
             }
             .submit_instructionsRow{
                 display: flex;
@@ -45,16 +50,18 @@
                 width: 30%;
             }
         }
+        
     }
     .submit_rowButtons{
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        height: 100%;
-;
-        .submit_addRowButton{
-            @include global.buttonStyle;
-
-        }
+        align-items: flex-start;
+        justify-content: center;
+        padding-left: .5rem;
+    }
+    .submitPage_navButtons{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30%;
     }
 }

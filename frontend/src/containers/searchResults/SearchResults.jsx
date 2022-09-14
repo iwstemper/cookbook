@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import {useNavigate, useParams, useLocation} from 'react-router-dom'
 import {RecipeThumbnail} from '../../components'
 
-function SearchResults({updateRecipes, recipeList}) {
+function SearchResults({updateRecipes, recipeList, user, favorites, getFavorites}) {
     const urlParams = useParams()
     const navigator = useNavigate()
     const currentURL = useLocation().pathname
@@ -25,10 +25,10 @@ function SearchResults({updateRecipes, recipeList}) {
         .then(res => setResults(res.data))
         .catch(err => console.log(err))
     }
-    useEffect(getRecipes, [urlParams])
+    useEffect(getRecipes, [currentURL])
 
     const resultsDisplay = recipeResults?.map((item, index) => {
-        return(<RecipeThumbnail key={index} recipe={item} componentOrigin='searchResults' updateRecipes={updateRecipes} recipeList={recipeList}/>)
+        return(<RecipeThumbnail recipeResults={recipeResults} setResults={setResults} favorites={favorites} getFavorites={getFavorites} user={user} key={index} recipe={item} componentOrigin='searchResults' updateRecipes={updateRecipes} recipeList={recipeList}/>)
     })
 
     return (

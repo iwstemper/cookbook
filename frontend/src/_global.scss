@@ -3,7 +3,6 @@ $secondaryColor: gray;
 $accentTextColor: white;
 
 @mixin labelFont{
-    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -38,12 +37,8 @@ $accentTextColor: white;
     flex-direction: column;
     gap: .5rem;
     margin-bottom: .75rem;
-    label{
-        @include labelFont;
-    }
     input, textarea, select{
-        border-radius: 10px;
-        padding: .5rem;
+        padding: .2rem;
         @include inputFont;
     }
 }

@@ -2,20 +2,20 @@ import {useState, useEffect} from 'react'
 import './shoppingList.scss'
 import { XIcon } from '../../assets/images'
 
-function ShoppingList({shoppingCart, updateShoppingCart}) {
+function ShoppingList({shoppingList, updateShoppingList}) {
 
-    const recipeSet = new Set(shoppingCart.map(item => item.parentRecipe.recipeName))
+    const recipeSet = new Set(shoppingList?.ingredients.map(item => item.recipeName))
     const recipeArr = [...recipeSet]
     
     const recipeList = recipeArr.map((recipe, index) => {
-        const recipeIngredients = shoppingCart.filter(cartItem => cartItem.parentRecipe.recipeName === recipe)
+        const recipeIngredients = shoppingList.ingredients.filter(cartItem => cartItem.recipeName === recipe)
         console.log(recipeIngredients)
         return(
             <div>
                 <div className='shoppingList_recipeHeader'>
                     <div style={{width: '.1rem', padding: '1rem', border: '1px solid black'}}></div>
                     {recipe}
-                    <XIcon width='5%' onClick={() => updateShoppingCart('removeAll', undefined, recipeIngredients[0].parentRecipe)}/>
+                    <XIcon width='5%' onClick={() => updateShoppingList('removeAll', undefined, {_id: recipeIngredients[0].recipeID})}/>
                 </div>
                 <hr/>
                 {recipeIngredients.map((ingredient, index) => {
@@ -23,11 +23,11 @@ function ShoppingList({shoppingCart, updateShoppingCart}) {
                         <div className='shoppingList_ingredientsList'>
                             <div className='shoppingList_ingredientsNameContainer'>
                                 <div style={{width: '.1rem', padding: '.5rem', border: ingredient.purchased ? '1px solid black' : '3px solid black'}}
-                                onClick={() => updateShoppingCart('purchased', ingredient, undefined)}
+                                onClick={() => updateShoppingList('purchased', ingredient, undefined)}
                                 ></div>
-                                <p>{`${ingredient.quantity} ${ingredient.unitOfMeasure} ${ingredient.ingredientName}`}</p>
+                                <p>{`${ingredient.quantity} ${ingredient.ingredientUOM ? ingredient.ingredientUOM : ''} ${ingredient.ingredientName}`}</p>
                             </div>
-                            <XIcon width='5%' onClick={() => updateShoppingCart('remove', ingredient, undefined)}/>
+                            <XIcon width='5%' onClick={() => updateShoppingList('remove', ingredient, undefined)}/>
                         </div>
                     )
                 })}
