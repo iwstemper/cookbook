@@ -1,0 +1,48 @@
+@use '../../global';
+
+.searchPage_input{
+    width: 100%;
+    display: flex;
+    transition: 0.5s;
+    width: 100%;
+    position:relative; 
+    input{
+        width: 100%;
+        height: 3rem;
+        border: 0;
+        padding-left: 1rem;
+        color: gray;
+        font-size: 1.5rem;
+    }
+    
+}
+.searchPage_ingredients{
+    margin-top: .5rem;
+    padding: 1rem;
+    .searchPage_ingredientsList{
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin: 1rem 0;
+        .searchPage_ingredientsItem{
+            @include global.lightBlueButton
+        }
+        .searchPage_ingredientsItem.searchPage_ingredientsItem-selected{
+            @include global.lightBlueContrastButton;
+        }
+    }
+}
+.ingredientsButton{
+    display: flex;
+    justify-content: center;
+}
+.searchIngredientsButton{
+    bottom: -5%;
+    position: fixed;
+    transition: 1s;
+    margin: auto;
+}
+.searchIngredientsButton-active{
+    bottom: 50%;
+    @include global.lightBlueButton;
+}

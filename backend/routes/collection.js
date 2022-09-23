@@ -2,6 +2,7 @@ const express = require('express')
 
 const collectionRouter = express.Router()
 const Collection = require('../models/Collection')
+const Recipe = require('../models/Recipe')
 
 //Creates new user collection
 collectionRouter.post('/:id', (req, res) => {
@@ -36,10 +37,11 @@ collectionRouter.get('/:id', (req, res) => {
 //Updates collection based on provided operation
 collectionRouter.put('/:id', (req,res) => {
     const {id} = req.params
-    const {recipe, operation} = req.body.inputs
+    const {operation} = req.body.inputs
 
     if (operation === 'add'){
-        Collection.updateOne({_id: id}, {lastUpdated: Date.now(), $push: {recipes: {recipeID: recipe._id}}}, (err, record) => {
+        const {recipe} = req.body.inputs
+        Collection.updateOne({_id: id}, {lastUpdated: Date.now(), $push: {recipes: {recipe: recipe, recipeID: recipe._id}}}, (err, record) => {
             if (err){
                 console.log(err)
                 res.send(err)
@@ -49,7 +51,19 @@ collectionRouter.put('/:id', (req,res) => {
         })
     }
     else if (operation === 'remove'){
+        const {recipe} = req.body.inputs
         Collection.updateOne({_id: id}, {lastUpdated: Date.now(), $pull: {recipes: {recipeID: recipe._id}}}, (err, result) => {
+            if (err){
+                console.log(err)
+                res.send(err)
+            }
+            console.log(result)
+            res.send(result)
+        })
+    }
+    else if (operation === 'rename'){
+        const {name} = req.body.inputs
+        Collection.updateOne({_id: id}, {lastUpdated: Date.now(), collectionName: name}, (err, result) => {
             if (err){
                 console.log(err)
                 res.send(err)
@@ -74,6 +88,22 @@ collectionRouter.delete('/:id', (req,res) => {
     })
 })
 
+//Gets user's collections with recipe details
+collectionRouter.get('/:id/details', async (req, res,) => {
+    const {id} = req.params
+    let collections = []
+
+    try {
+        collections = await Collection.find({creatorID: id}).exec()
+        collections.forEach(collection => {
+            const {id} = collection
+            const recipeIDs = collection.recipes.map(item => item.recipeID)
+        })
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
 
 
 module.exports = collectionRouter

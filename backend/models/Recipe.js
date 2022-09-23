@@ -24,7 +24,9 @@ const recipeSchema = new mongoose.Schema({
     notes: {type: Array, required: false},
     dateAdded: {type: Date, required: true, immutable: true, default: Date.now()},
     favorites: {type: Number, required: true, default: 0},
-    creator: {type: String, required: false}
+    creator: {type: String, required: false},
+    imageURL: {type: String, require: true},
+    imageID: {type: String, required: true}
 })
 
 module.exports = mongoose.model('Recipe', recipeSchema)

@@ -1,0 +1,35 @@
+@use '../../global';
+
+.recipeListItem{
+    display: flex;
+    margin: .5rem 0;
+    justify-content: space-between;
+    align-items: flex-start;
+    .recipeListItem_image{
+        width: 5rem;
+        height: 5rem;
+        margin: 0 2rem;
+        object-fit: cover;
+    }
+    .recipeListItem_details{
+        display: flex;
+        flex-direction: column;
+        margin-right: auto;
+        .recipeListItem_name{
+            flex-grow: 2;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            color: global.$darkBlue;
+            font-size: 1.2rem;
+        }
+        .recipeListItem_detailShopping{
+            color: global.$lightBlue
+        }
+    }
+    .recipeListItem_ellipses{
+        width: .75rem; 
+        margin-right: 1rem;
+        color: gray;
+    }
+}

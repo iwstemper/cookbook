@@ -1,0 +1,79 @@
+@use '../../global';
+
+.modal_overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.2);
+    z-index: 4;
+    .dialogueModal_content{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        padding: .5rem 2rem;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        animation-name: slideUp;
+        animation-duration: .5s;
+        background-color: global.$darkBlue;
+        border-radius: 10%;
+        border: 3px solid white;
+    }
+    .actionModal_content{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        animation-name: slideUp;
+        animation-duration: .5s;
+        background-color: rgb(231, 231, 231);
+        border: 2px solid black;
+        padding: .5rem;
+        border-radius: 5%;
+    }
+    .actionModal_content-active{
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .modal_closeIcon{
+            width: 1rem;
+            fill: global.$primaryColor;
+        }
+        .modal_form{
+            @include global.formGroup;
+            align-items: center;
+            text-align: center;
+
+            label{
+                font-weight: bold;
+            }
+            .modal_addCollection{
+                @include global.buttonStyle;
+            }
+        }
+    }
+    .dialogueModal_content-active{
+        .modal_closeIcon{
+            width: 1rem;
+            fill: global.$primaryColor;
+        }
+        p{
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+}
+.modal_overlay-active{
+    display: block;
+}
+
+@keyframes slideUp {
+    0% {transform: translate(-50%, 200%)}
+    100% {transform: translate(-50%, -50%)}
+}

@@ -1,11 +1,20 @@
+@use '../../global';
+
 .recipe_ingredientRow{
     margin: 1rem;
     display: flex;
     justify-content: flex-start;
     gap: 1rem;
-    .recpie_ingredientRowImage{
+    .recipe_ingredientRowImage{
         width: 1rem;
         background-color: white;
+        .ingredientsRow_icon{
+            width: 1rem;
+            fill: global.$lightBlue;
+        }
+        .ingredientsRow_icon-added{
+            fill: global.$disabledColor;
+        }
     }
     .recipe_ingredientRowName{
         overflow: scroll;

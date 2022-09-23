@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {PlusIcon} from '../../assets/images/index'
 import axios from 'axios'
+import {formatCookTime} from '../../utils/formatCookTime'
 
 function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavorites, user, recipeResults, setResults}) {
 
@@ -44,21 +45,24 @@ function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavo
         .catch(err => console.log(err))
     }
 
+    let totalTime = formatCookTime(recipe)
+    let clickFunction = favorites?.find(item => item.recipeID === recipe._id) ? 'remove' : 'add'
+
     return(
         <div className='recipe_headerImage' onClick={e => navigateToRecipe(e)} >
-                <img src={'https://wtwp.com/wp-content/uploads/2015/06/placeholder-image-300x225.png'}/>
+                <img src={recipe.imageURL ? recipe.imageURL : 'https://wtwp.com/wp-content/uploads/2015/06/placeholder-image-300x225.png'}/>
                 <div className='recipe_headerImageDetails'>
                     <h2>{recipe.recipeName}</h2>
                     <div className='recipe_headerFlexLine recpie_headerFlexLineButtonRow'>
                         <div className='recipe_headerFlexItem'>
                             <p>Ian Stemper</p>
                         </div>
-                        <div style={{position: 'relative', width: '15%'}}>
+                        <div style={{position: 'relative', width: '15%'}} onClick={() => updateFavorites(clickFunction)}>
                             <div style={{zIndex: 1, position: 'absolute', color: 'gray', bottom: 2, right: 0, backgroundColor: 'white', fontSize: '.5rem', fontWeight: 'bold', padding: '.5rem', borderRadius: '50%'}}>{recipe.favorites}</div>
                             {favorites?.find(item => item.recipeID === recipe._id) ?
-                            <PlusIcon className='addRecipe_icon' style={{width: '3rem', position: 'absolute', bottom:5, left: 0}} fill='gray' onClick={() => updateFavorites('remove')}/>
+                            <PlusIcon className='addRecipe_icon addRecipe_icon-disabled' />
                             :
-                            <PlusIcon className='addRecipe_icon' style={{width: '3rem', position: 'absolute', bottom:5, left: 0}} fill='#19a2b1' onClick={() => updateFavorites('add')}/>
+                            <PlusIcon className='addRecipe_icon' />
                             }
                         </div>
                     </div>
@@ -70,8 +74,8 @@ function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavo
                             </div>
                             <p>|</p>
                             <div className='recipe_headerFlexItem'>
-                                <p>{recipe.cookTime.mins + recipe.prepTime.mins} 
-                                    <span>mins</span>
+                                <p>{totalTime.totalHrs > 0 && `${totalTime.totalHrs} hours`} {totalTime.totalMins && `${totalTime.totalMins} mins`}
+                                    
                                 </p>
                             </div>
                         </div>

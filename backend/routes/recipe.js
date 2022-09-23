@@ -1,5 +1,5 @@
 const express = require('express');
-
+const {cloudinary} = require('../utils/cloudinary')
 const recipeRouter = express.Router()
 const Recipe = require('../models/Recipe')
 
@@ -20,29 +20,42 @@ recipeRouter.get('/', (req,res) => {
             console.log(err)
             res.send(err)
         }
-        console.log(result)
         res.send(result)
     })
     
 })
 
+recipeRouter.get('/category/:category', (req, res) => {
+    const {category} = req.params
+})
+
 //Add new recipe
-recipeRouter.post('/', (req,res) => {
-    const newRecipe = req.body.inputs
-    const recipe = new Recipe(
-        {
-            recipeName: newRecipe.recipeName, dishType: newRecipe.dishType, cuisineType: newRecipe.cuisineType,
-            prepTime: newRecipe.prepTime, cookTime: newRecipe.cookTime, instructions: newRecipe.instructions,
-            ingredients: newRecipe.ingredients, notes: newRecipe.notes, servings: newRecipe.servings
-        }
-    )
+recipeRouter.post('/', async (req,res) => {
+    const {data, recipeData} = req.body
+    const options = {
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+        folder: 'Cookbook'
+    }
     
-    recipe.save((err, result) => {
-        if (err){
-            console.log(err)
-        }
-        res.send(result)
-    })
+    try {
+        const result = await cloudinary.uploader.upload(data, options)
+        const {url, public_id} = result
+        const recipe = new Recipe(recipeData)
+        recipe.imageURL = url
+        recipe.imageID = public_id
+        console.log(recipe)
+        recipe.save((err, result) => {
+            if (err){
+                console.log(err)
+            }
+            res.send(result)
+        })
+    } catch (err) {
+        console.log(err)
+    }
+    
 })
 
 //Query single recipe
@@ -55,5 +68,6 @@ recipeRouter.get('/:id', (req,res) => {
         res.json(record)
     })
 })
+
 
 module.exports = recipeRouter

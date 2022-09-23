@@ -1,0 +1,31 @@
+@use '../../global';
+
+.homepage_header{
+    padding: 1rem 1.5rem;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    .homepage_headerLinks{
+        display: flex;
+        gap: .5rem;
+        p{
+            font-weight: bold;
+        }
+        .homepage_headerLink{
+            opacity: .2;
+            font-weight: bold;
+        }
+        .homepage_headerLink-selected{
+            opacity: 1;
+            div{
+                margin-top: .25rem;
+                height: .25rem;
+                background-color: black;
+            }
+        }
+    }
+}

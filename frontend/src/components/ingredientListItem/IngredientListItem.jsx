@@ -6,11 +6,11 @@ const IngredientListItem = ({recipe, shoppingList, updateShoppingList, item, ind
     return(
         <div className='recipe_ingredientItem'>
             <div  className='recipe_ingredientRow'>
-                <div className='recpie_ingredientRowImage'>
+                <div className='recipe_ingredientRowImage'>
                     { shoppingList.ingredients &&
                         shoppingList.ingredients.find(ingredient => ingredient.ingredientID === item._id) ?
-                        <XIcon style={{ width: '1rem'}} fill='gray' onClick={() => updateShoppingList('remove', item, recipe)}/> :
-                        <PlusIcon style={{ width: '1rem'}} fill='#19a2b1' onClick={() => updateShoppingList('add', item, recipe)}/> 
+                        <XIcon className='ingredientsRow_icon ingredientsRow_icon-added' onClick={() => updateShoppingList('remove', item, recipe)}/> :
+                        <PlusIcon className='ingredientsRow_icon' onClick={() => updateShoppingList('add', item, recipe)}/> 
                     }
                 </div>
                 <div className='recipe_ingredientRowName'>

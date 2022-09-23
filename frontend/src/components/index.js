@@ -3,4 +3,5 @@ export {default as IngredientListItem} from './ingredientListItem/IngredientList
 export {default as RecipeThumbnail} from './recipeThumbnail/RecipeThumbnail'
 export {default as InstructionsListItem} from './instructionsListItem/instructionsListItem'
 export {default as CollectionList} from './collectionList/CollectionList'
-export {default as PopupMenu} from './popupMenu/PopupMenu'
+export {default as CollectionListItem} from './collectionList/CollectionListItem'
+export {default as RecipeListItem} from './recipeListItem/RecipeListItem'

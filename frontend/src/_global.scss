@@ -1,35 +1,60 @@
-$primaryColor: orange;
-$secondaryColor: gray;
+$primaryColor: #FA9856;
+$secondaryColor: #22559C;
 $accentTextColor: white;
+
+$orange: #FA9856;
+$darkBlue: #285e82;
+$lightBlue: #19a2b1;
+$disabledColor: #cccbcb;
 
 @mixin labelFont{
     font-weight: bold;
+    color: $darkBlue;
+    font-size: 1.2rem;
 }
 
 @mixin inputFont{
     font-size: 1.2rem;
-    color: $secondaryColor;
 }
 
 @mixin buttonStyle{
-    font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
     border-radius: 20px;
     padding: .5rem 1rem;
     border: 0;
-    background-color: $primaryColor;
+    background-color: $orange;
+    color: $accentTextColor;
+}
+@mixin contrastButtonStyle{
+    font-weight: bold;
+    text-align: center;
+    padding: .5rem 1rem;
+    color: $orange;
+    background: $accentTextColor;
+    border: 1px solid $orange;
+    border-radius: 20px;
+}
+
+@mixin lightBlueButton{
+    font-weight: bold;
+    text-align: center;
+    border-radius: 20px;
+    padding: .5rem 1rem;
+    border: 0;
+    background-color: $lightBlue;
     color: $accentTextColor;
 }
 
-@mixin contrastButtonStyle{
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: .5rem 1rem;
-    color: $primaryColor;
-    background: $accentTextColor;
-    border: 0;
-    border-radius: 20px;
+@mixin lightBlueContrastButton{
+        font-weight: bold;
+        text-align: center;
+        border-radius: 20px;
+        padding: .5rem 1rem;
+        border: 0;
+        background-color: $accentTextColor;
+        color: $lightBlue;
+        border: 1px solid $lightBlue;
 }
 
 @mixin formGroup{
@@ -41,4 +66,33 @@ $accentTextColor: white;
         padding: .2rem;
         @include inputFont;
     }
+}
+
+@mixin collectionThumbnail{
+        position: relative;
+        box-sizing: border-box;
+        img{
+            position: absolute;
+            width: 100%;
+            height: 6rem;
+            z-index: -1;
+        }
+        .collectionItem_content{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;            
+            color: $accentTextColor;
+            height: 6rem;
+            .collectionItem_name{
+                font-size: 2rem;
+                font-weight: bold;
+                padding-left: .5rem;
+                overflow: scroll;
+            }
+            .collectionItem_rightContent{
+                text-align: center;
+                display: flex;
+                padding-right: 1rem;
+            }
+        }
 }

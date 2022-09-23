@@ -1,24 +1,26 @@
 @use '../../global';
 
-.profile_collectionList{
-    margin-top: 3rem;
-    .profile_collectionListHeader{
+.collectionList{
+
+    .collectionList_header{
         height: 2rem;
         background-color: global.$secondaryColor;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 1rem;
-        .profile_collectionSearchInput{
+        padding: 0 .5rem;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        .collectionList_searchInput{
             height: 100%;
             display: flex;
             align-items: center;
-            .profile_collectionSearch{
+            .collectionList_searchIcon{
                 fill: global.$accentTextColor;
                 height: 50%;
-                margin-right: .5rem;
             }
-            #collection_searchInput{
+            #collectionList_searchInput{
                 background-color: transparent;
                 border: 0;
                 color: global.$accentTextColor;
@@ -28,47 +30,67 @@
                 outline: none;
             }
         }
-        .profile_collectionHeaderRightContent{
+        .collectionList_headerRightContent{
             color: global.$accentTextColor;
             font-size: .75rem;
             font-weight: bold;
-            width: 40%;
-            text-align: center;
+            width: 50%;
+            text-align: right;
         }
     }
-    
     .collectionListItem{
-        position: relative;
-        box-sizing: border-box;
-        img{
-            position: absolute;
-            width: 100%;
-            height: 6rem;
-            z-index: -1;
-        }
+        background-color: black;
         .collectionItem_content{
             display: flex;
             justify-content: space-between;
             align-items: center;            
             color: global.$accentTextColor;
-            height: 6rem;
             .collectionItem_name{
-                font-size: 2rem;
                 font-weight: bold;
                 padding-left: .5rem;
+                overflow: hidden;
             }
             .collectionItem_rightContent{
                 text-align: center;
-                font-size: 1.2rem;
                 display: flex;
                 padding-right: 1rem;
             }
         }
     }
 }
-
-@media screen and (min-width: 700px) {
-    .profile_collectionList{
-        width: 80%
+.collectionList_popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 2;
+    animation-name: fadeIn;
+    animation-duration: .5s;
+    .popupMenu{
+        background-color: global.$secondaryColor;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        z-index: 3;
+        .popup_closeIcon{
+            width: 1rem;
+            margin-right: .5rem;
+            fill: white;
+        }
     }
+
+}
+@keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.collectionList_rows{
+        max-height: 20rem;
+        overflow: scroll;
 }

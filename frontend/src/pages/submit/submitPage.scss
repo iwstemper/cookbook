@@ -1,0 +1,73 @@
+@use '../../global';
+
+.submitPage{
+    margin: 1rem;
+    h1{
+        text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    h1:before,
+    h1:after {
+    background: black;
+    height: 2px;
+    flex: 1;
+    content: '';
+    }
+    .submitPage_form{
+        width: 95%;
+        margin: 1rem auto;
+        min-height: 60vh;
+        .submitPage_headers{
+            width: 80%;
+            margin: auto
+        }
+        .submitPage_formGroup{
+            @include global.formGroup;
+            .submitPage_photoPreview{
+                height: 10rem;
+                width: 10rem;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+            .submit_ingredientsRow{
+                display: grid;
+                grid-template-columns: repeat(2, 15%) 50% 20%;
+                column-gap: .5rem;
+            }
+            .submit_instructionsRow{
+                display: flex;
+                textarea{
+                    width: 90%;
+                }
+                div{
+                    margin-left: auto;
+                }
+            }
+        }
+        .submitPage_dividedFormGroup{
+            .submitPage_dividedFormLine{
+                margin: .75rem 0;
+                display: flex;
+                gap: .5rem;
+            }
+            input{
+                width: 30%;
+            }
+        }
+        
+    }
+    .submit_rowButtons{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding-left: .5rem;
+    }
+    .submitPage_navButtons{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30%;
+    }
+}

@@ -5,7 +5,8 @@ const MealPlan = new mongoose.Schema({
         lastUpdated: {type: Date, required: true, default: Date.now()},
         creatorID: {type: String, required: true},
         recipes: [{
-                recipeID: {type: String, required: true},
+                recipe: {},
+                recipeID: {type: String, require: true},
                 dateAdded: {type: Date, required: true, default: Date.now()}
         }],
 })

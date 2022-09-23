@@ -1,0 +1,35 @@
+.explore{
+    display: flex;
+    flex-wrap: wrap;
+    .explore_tile{
+        width: 50%;
+        aspect-ratio: 1/1;
+        opacity: .8;
+        background-color: black;
+        display: flex;
+        border-radius: 1px solid black;
+        .explore_tileTitle{
+            color: white;
+            background-color: gray;
+            border-radius: 50%;
+            width: 50%;
+            height: 50%;
+            text-align: center;
+            margin: auto;
+            display: flex;
+            p{
+                margin: auto;
+            }
+        }
+    }
+    .explore_tile:hover{
+        cursor: pointer;
+        animation: flipTile 1s;
+    }
+}
+
+@keyframes flipTile {
+    0% {transform: rotateX(0deg);}
+    20% {transform: rotateX(180deg);}
+    100% {transform: rotateX(0deg);}
+}

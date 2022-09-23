@@ -67,7 +67,6 @@ shoppingListRouter.put('/:id', async (req, res) => {
                     res.json(err)
                 }
                 const items = record.ingredients.map((item) => {
-                    console.log(item.ingredientID, ingredient.ingredientID)
                     if (item.ingredientID === ingredient.ingredientID){
                         return {...item, purchased: !item.purchased}
                     }

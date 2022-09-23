@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.scss'
-import {Homepage, SearchPage, SubmitPage, SearchResults, RecipePage, ListsPage, CollectionsPage, Profile} from './containers'
+import {Homepage, SearchPage, SubmitPage, SearchResults, RecipePage, ListsPage, Profile} from './pages'
 import { Navbar } from './components'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {useAuth0} from '@auth0/auth0-react'
@@ -61,70 +61,22 @@ function App() {
     .put(`http://localhost:5010/shoppingList/${user.email}`, {inputs: {recipe: recipe, operation: operation, ingredient: ingredient}})
     .then(res => {
       console.log(res)
-      switch (operation){
-        case 'add':
-          setShoppingList(prev => {  
-            let newIngredient = {
-              recipeName: recipe.recipeName, recipeImage: recipe.cuisineType,
-              recipeID: recipe._id, ingredientName: ingredient.ingredientName,
-              ingredientUOM: ingredient.unitOfMeasure, ingredientQuantity: ingredient.quantity,
-              purchased: false, ingredientID: ingredient._id
-            }
-            let list = [...prev.ingredients]
-            list.push(newIngredient)
-            return{
-              ...prev, 
-              ingredients: list
-            }
-          })
-          break;
-        case 'remove':
-          setShoppingList(prev => {
-            return {
-              ...prev,
-              ingredients: shoppingList.ingredients.filter(item => item.ingredientID !== ingredient._id)
-            }
-          })
-          break;
-        case 'purchased':
-          setShoppingList(res.data)
-        case 'addAll':
-          let newItems = ingredient.filter(ingredient1 => !shoppingList.ingredients.some(ingredient2 => ingredient1._id === ingredient2.ingredientID)).map(item => {
-            return{
-              ...item,
-              recipeName: recipe.recipeName, recipeImage: recipe.cuisineType,
-              recipeID: recipe._id, purchased: false, ingredientID: item._id
-            }
-          })
-          let list = shoppingList.ingredients
-          list.push(...newItems)
-          setShoppingList(prev => {
-            return {
-              ...prev,
-              ingredients: list
-            }
-          })
-          break;
-        case 'removeAll':
-        setShoppingList(prev => {
-          return{
-            ...prev,
-            ingredients: shoppingList.ingredients.filter(item => item.recipeID !== recipe._id)
-          }
-        })
-        break;
-      }
     })
+    .then(() => getShoppingList())
     .catch(err => console.log(err))
   }
 
   return (
     <div className="App">
       <BrowserRouter>
-        <TopNavbar/>
+        {!isAuthenticated &&<TopNavbar/>}
         <Navbar/>
         <Routes>
-            <Route path='/' element={<Homepage />}/>
+            <Route path={'/'} element={<Homepage />}/>
+            <Route path='/explore' element={<Homepage />}>
+              <Route path=':category' element={<Homepage />}/>
+            </Route>
+            <Route path='/trending' element={<Homepage />}/>
             <Route path='/submit' element={<SubmitPage />}/>
             <Route path='/search'>
               <Route index element={<SearchPage/>}/>
@@ -134,11 +86,8 @@ function App() {
             <Route path='/recipe'>
               <Route path=':id' element={<RecipePage favorites={favorites} getFavorites={getFavorites} mealPlans={mealPlans} getMealPlans={getMealPlans} collections={collections} getCollections={getCollections} shoppingList={shoppingList} updateShoppingList={updateShoppingList} user={userProfile}/>}/>
             </Route>
-            <Route path='lists' element={<ListsPage  shoppingList={shoppingList} updateShoppingList={updateShoppingList}/>}/>
+            <Route path='lists' element={<ListsPage user={user} getCollections={getCollections} getMealPlans={getMealPlans} mealPlans={mealPlans} collections={collections} shoppingList={shoppingList} updateShoppingList={updateShoppingList}/>}/>
             <Route path='/profile' element={<Profile mealPlans={mealPlans} getMealPlans={getMealPlans} user={userProfile} collections={collections} getCollections={getCollections}/>}/>
-            <Route path='/collections' element={<CollectionsPage />} >
-              <Route path=':id' element={<CollectionsPage />} />
-            </Route>
         </Routes>
         
       </BrowserRouter>

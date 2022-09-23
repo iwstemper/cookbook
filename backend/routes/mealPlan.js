@@ -2,6 +2,7 @@ const express = require('express')
 
 const mealPlanRouter = express.Router()
 const MealPlan = require('../models/MealPlan')
+const Recipe = require('../models/Recipe')
 
 //Creates new user meal plan
 mealPlanRouter.post('/:id', (req, res) => {
@@ -35,10 +36,12 @@ mealPlanRouter.get('/:id', (req, res) => {
 //Adds recipe to existing meal plan
 mealPlanRouter.put('/:id', (req, res) => {
     const {id} = req.params
-    const {recipe, operation} = req.body.inputs
+    const {operation} = req.body.inputs
     
     if (operation === 'add'){
-        MealPlan.updateOne({_id: id}, {lastUpdated: Date.now(),$push: {recipes: {recipeID: recipe._id}}}, (err, result) => {
+        const {recipe} = req.body.inputs
+        console.log(recipe)
+        MealPlan.updateOne({_id: id}, {lastUpdated: Date.now(), $push: {recipes: {recipeID: recipe._id, recipe: recipe}}}, (err, result) => {
             if (err){
                 console.log(err)
                 res.send(err)
@@ -48,7 +51,9 @@ mealPlanRouter.put('/:id', (req, res) => {
         })
     }
     else if (operation === 'remove'){
-        MealPlan.updateOne({_id: id}, {lastUpdated: Date.now(),$pull: {recipes: {recipeID: recipe._id}}}, (err, result) => {
+        const {recipe} = req.body.inputs
+        console.log(recipe._id)
+        MealPlan.updateOne({_id: id}, {lastUpdated: Date.now(), $pull: {recipes: {recipeID: recipe._id}}}, (err, result) => {
             if (err){
                 console.log(err)
                 res.send(err)
@@ -57,6 +62,31 @@ mealPlanRouter.put('/:id', (req, res) => {
             res.send(result)
         })
     }
+    else if (operation === 'rename'){
+        const {name} = req.body.inputs
+        MealPlan.updateOne({_id: id}, {lastUpdated: Date.now(), mealPlanName: name}, (err, result) => {
+            if (err){
+                console.log(err)
+                res.send(err)
+            }
+            console.log(result)
+            res.send(result)
+        })
+    }
+})
+
+//Deletes a meal plan
+mealPlanRouter.delete('/:id', (req, res) => {
+    const {id} = req.params
+
+    MealPlan.deleteOne({_id: id}, (err, result) => {
+        if (err){
+            console.log(err)
+            res.send(err)
+        }
+        console.log(result)
+        res.send(result)
+    })
 })
 
 module.exports = mealPlanRouter

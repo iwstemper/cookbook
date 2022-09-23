@@ -1,9 +1,14 @@
+@use '../../global';
+
 .recipe_headerImage{
     width: 100%;
     position: relative;
     font-size: 2rem;
     img{
+        height: 30rem;
         width: 100%;
+        opacity: 0.6;
+        object-fit: cover;
         box-shadow: 0 4px 2px -200px gray;
     }
     .recipe_headerImageDetails{
@@ -31,4 +36,14 @@
             color: gray;
         }
     }
+}
+.addRecipe_icon{
+    width: '3rem';
+    position: 'absolute';
+     bottom:5; 
+     left: 0;
+    fill: global.$lightBlue;
+}
+.addRecipe_icon-disabled.addRecipe_icon{
+    fill: global.$disabledColor;
 }
