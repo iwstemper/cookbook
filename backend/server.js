@@ -3,7 +3,6 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const cloudinary = require('cloudinary').v2
 require('dotenv').config()
 
 //Route imports

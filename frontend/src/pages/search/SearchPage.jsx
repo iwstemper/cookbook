@@ -37,7 +37,7 @@ function SearchPage(){
             <div className='searchPage_input' style={{top: ingredientsSearch.length > 0 ? '-50rem' : 0}}>
                 <input type='search' name='searchInput' id='searchPage_input' value={searchInput} onChange={e => setSearchInput(e.target.value)} 
                     placeholder='Search for Recipes' />
-                    <SearchIcon width='8%' fill='gray' style={{marginRight: '1rem'}} onClick={() => focusOrSearch()}/>
+                    <SearchIcon width='5%' fill='gray' style={{marginRight: '1rem'}} onClick={() => focusOrSearch()}/>
             </div>
             <div className='searchPage_ingredients'>
                 <h3>Recommended Ingredients</h3>

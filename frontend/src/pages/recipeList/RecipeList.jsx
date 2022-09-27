@@ -20,15 +20,11 @@ function RecipeList({recipeList, listType, shoppingList, updateShoppingList, get
   }, [])
 
   function updateActiveCollection(e,index){
-    if (!(e.target.className === 'recipeList_ellipsesMenuItem' || e.target.className.baseVal === 'recipeList_ellipses' || e.target.className.baseVal === 'dots')){
-      console.log(isActive)
+    if (e.target.className !== 'recipeList_ellipsesMenuItem' && e.target.className.baseVal !== 'recipeList_ellipses' && e.target.className.baseVal !== 'dots'){
       let list = isActive.map((bool, activeIndex) => {
-        console.log(index, bool, activeIndex)
         if (index === activeIndex){
-          console.log('switch')
           return !bool
         }
-        console.log('switch')
         return bool
       })
       setIsActive(list)
@@ -91,8 +87,8 @@ function RecipeList({recipeList, listType, shoppingList, updateShoppingList, get
     let image = collection.recipes[0]?.recipe.imageURL || 'https://wtwp.com/wp-content/uploads/2015/06/placeholder-image-300x225.png'
       
     return(
-        <div className='recipeList' onClick={e => updateActiveCollection(e, index)} key={collection._id} >
-          <div className={isActive[index] ? 'collectionListItem collectionListItem-active' : 'collectionListItem'} key={collection._id} >
+        <div className='recipeList' key={collection._id} >
+          <div className='collectionListItem' key={collection._id} onClick={e => updateActiveCollection(e, index)} >
             <img src={image} />
             <div >
             <Ellipses className='recipeList_ellipses'onClick={() => updateEllipses(index)}  />
@@ -116,20 +112,22 @@ function RecipeList({recipeList, listType, shoppingList, updateShoppingList, get
             </div>
           </div>
           <div className={isActive[index] ? 'recipeList_items recipeList_items-active' : 'recipeList_items recipeList_items-hidden'}>
-            {collection.recipes.length === 0 ?
+            {collection.recipes.length === 0 &&
                   <div className='recipeList-empty'>
                     <p>This {listType} is empty</p>
                     <Link to='/explore' className='recipeList_exploreLink'>
                       <button>Add recipes now!</button>
                     </Link>
                   </div>
-            :
+            }
+            {collection.recipes.length > 0 &&
               collection.recipes.map(recipe => {
                 return(
                     <RecipeListItem collectionID={collection._id} recipe={recipe.recipe} key={recipe._id} listType={listType} getCollections={getCollections} getMealPlans={getMealPlans} shoppingList={shoppingList} updateShoppingList={updateShoppingList} />
                 )
               })
             }
+            
           </div>
         </div>
       )

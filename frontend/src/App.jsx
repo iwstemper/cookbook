@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import './App.scss'
 import {Homepage, SearchPage, SubmitPage, SearchResults, RecipePage, ListsPage, Profile} from './pages'
+import Explore from './pages/home/explore/Explore'
+import Trending from './pages/home/Trending'
+import ForYou from './pages/home/ForYou'
 import { Navbar } from './components'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {useAuth0} from '@auth0/auth0-react'
@@ -69,14 +72,18 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {!isAuthenticated &&<TopNavbar/>}
+        {!isAuthenticated && !isLoading &&<TopNavbar/>}
         <Navbar/>
         <Routes>
-            <Route path={'/'} element={<Homepage />}/>
-            <Route path='/explore' element={<Homepage />}>
-              <Route path=':category' element={<Homepage />}/>
+            <Route path={'/'} element={<Homepage />}>
+              <Route path='explore' element={<Explore getFavorites={getFavorites} favorites={favorites} user={user}/>}>
+                <Route path=':id' element={<Explore  getFavorites={getFavorites} favorites={favorites} user={user}/>}>
+                  <Route path=':id' element={<Explore getFavorites={getFavorites} favorites={favorites} user={user}/>}/>
+                </Route>
+              </Route>
+              <Route path='trending' element={<Trending />}/>
+              <Route path='foryou' element={<ForYou />}/>
             </Route>
-            <Route path='/trending' element={<Homepage />}/>
             <Route path='/submit' element={<SubmitPage />}/>
             <Route path='/search'>
               <Route index element={<SearchPage/>}/>

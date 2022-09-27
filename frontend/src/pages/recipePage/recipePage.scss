@@ -1,10 +1,14 @@
 @use '../../global';
 
+.recipePage{
+    padding-bottom: 8vh;
+}
+
 .recipe_addToLists{
     display: flex;
     justify-content: space-evenly;
     .recipe_addToListsItem{
-        margin: 1rem 1.5rem;
+        margin: 1rem 1rem;
         display: flex;
         gap: .5rem;
         .recipe_addToListsItemIcon{

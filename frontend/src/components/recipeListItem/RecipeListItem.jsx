@@ -7,11 +7,12 @@ import {formatCookTime} from '../../utils/formatCookTime'
 
 function RecipeListItem({recipe, shoppingList, updateShoppingList, getCollections, getMealPlans, listType, collectionID}) {
 
+  //Navigates to recipe
   const navigator = useNavigate()
   function navigateToRecipe (e){
     console.log(e.target.className )
-    if (!(e.target.className === 'recipeListItem_detailShopping' && e.target.className === 'recipeListItem_ellipses')){
-      navigator(`/recipe/${recipe._id}`)
+    if (e.target.className !== 'recipeListItem_detailShopping' && e.target.className !== 'recipeListItem_ellipses' && e.target.className !== 'recipeListItem_detailShoppingText'){
+        navigator(`/recipe/${recipe._id}`)
     }
   }
 
@@ -35,11 +36,11 @@ function RecipeListItem({recipe, shoppingList, updateShoppingList, getCollection
     }
   }
 
-
+  //Formats cook time display
   const totalTime = formatCookTime(recipe)
 
   return (
-    <div className='recipeListItem' onClick={e => navigateToRecipe(e)}>
+    <div className='recipeListItem' onClick={e => navigateToRecipe(e)} >
           <img className='recipeListItem_image' src={'https://wtwp.com/wp-content/uploads/2015/06/placeholder-image-300x225.png'}/>
         <div className='recipeListItem_details'>
           <div className='recipeListItem_name'>
@@ -48,13 +49,16 @@ function RecipeListItem({recipe, shoppingList, updateShoppingList, getCollection
           <div className='recipeListItem_detail'>
               {totalTime.totalHrs > 0 && `${totalTime.totalHrs} hours`} {totalTime.totalMins && `${totalTime.totalMins} mins`} | {recipe?.ingredients.length} ingredients
           </div>
-          <div className='recipeListItem_detailShopping' >
-              {
-                !isInCart ?
-                <p className='recipeListItem_detailShoppingText' onClick={() => updateShoppingList('addAll', recipe.ingredients, recipe)}>Add to shopping list</p> :
-                <p className='recipeListItem_detailShoppingText'>In shopping list</p>
-              }
-          </div>
+          {isInCart &&
+            <div className='recipeListItem_detailShopping'>
+                  <p className='recipeListItem_detailShoppingText'>In shopping list</p>
+            </div>
+          }
+          {!isInCart &&
+            <div className='recipeListItem_detailShopping' onClick={() => updateShoppingList('addAll', recipe.ingredients, recipe)}>
+                <p className='recipeListItem_detailShoppingText'>Add to shopping list</p> 
+            </div>
+          }
         </div>
         <CrossIcon className='recipeListItem_ellipses' onClick={() => removeRecipe()}/>
     </div>

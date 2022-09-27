@@ -1,6 +1,7 @@
 .explore{
     display: flex;
     flex-wrap: wrap;
+    padding-top: 3rem;
     .explore_tile{
         width: 50%;
         aspect-ratio: 1/1;
@@ -25,6 +26,38 @@
     .explore_tile:hover{
         cursor: pointer;
         animation: flipTile 1s;
+    }
+}
+.exploreResults_header{
+    width: 100%;
+    aspect-ratio: 6/1;
+    background-color: black;
+    padding: 1rem;
+    position: fixed;
+    top: 8vh;
+    z-index: 2;
+    .exploreResults_headerText{
+        color: white;
+        background-color: gray;
+        width: 25%;
+        aspect-ratio: 1/1;
+        text-align: center;
+        margin: auto;
+        display: flex;
+        border-radius: 50%;
+        
+    }
+    p{
+        margin: auto;
+    }
+}
+.exploreResults_tiles{
+    margin-top: 30%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .exploreResults_tile{
+        width: 50%;
     }
 }
 

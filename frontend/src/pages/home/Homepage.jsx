@@ -1,9 +1,6 @@
 import {useState} from 'react'
 import './homepage.scss'
-import {useNavigate, useLocation} from 'react-router-dom'
-import Explore from './explore/Explore'
-import Trending from './Trending'
-import ForYou from './ForYou'
+import {useNavigate, useLocation, Outlet} from 'react-router-dom'
 
 function Homepage(){
 
@@ -13,8 +10,6 @@ function Homepage(){
         setPage(location.slice(1))
         nav(location)
     }
-
-
 
     return(
         <div className='homepage'>
@@ -35,9 +30,7 @@ function Homepage(){
                     </div>
                 </div>
             </div>
-            {page === '' && <ForYou/>}
-            {page === 'explore' && <Explore/>}
-            {page === 'Trending' && <Trending/>}
+            <Outlet />
         </div>
     )
 }

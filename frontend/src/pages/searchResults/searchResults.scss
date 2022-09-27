@@ -1,0 +1,15 @@
+.searchResults{
+    .searchResults_header{
+        position: fixed;
+        top: 0;
+        background-color: white;
+        z-index: 2;
+        width: 100%;
+        padding: 1rem;
+    }
+    .searchResults_result{
+        display: flex;
+        flex-direction: column;
+        padding: 5%;
+    }
+}

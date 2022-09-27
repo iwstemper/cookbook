@@ -25,10 +25,6 @@ recipeRouter.get('/', (req,res) => {
     
 })
 
-recipeRouter.get('/category/:category', (req, res) => {
-    const {category} = req.params
-})
-
 //Add new recipe
 recipeRouter.post('/', async (req,res) => {
     const {data, recipeData} = req.body
