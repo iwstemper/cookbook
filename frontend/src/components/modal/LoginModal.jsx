@@ -1,8 +1,9 @@
 import React from 'react'
+import './modal.scss'
 
-function LoginModal() {
+function LoginModal({modal, setModal}) {
   return (
-    <div>
+    <div className='modal_overlay modal_overlay-active'>
         
     </div>
   )

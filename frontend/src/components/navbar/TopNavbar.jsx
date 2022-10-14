@@ -7,6 +7,7 @@ function TopNavbar(){
 
     const {user, isLoading, loginWithRedirect, logout} = useAuth0()
 
+    //MOVE TO AUTH0 SERVER
     function registerCart(){
         axios
         .post(`http://localhost:5010/shoppingList/${user.email}`)

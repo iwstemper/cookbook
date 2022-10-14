@@ -1,16 +1,15 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
 import {useLocation} from 'react-router-dom'
-import { RecipeThumbnail } from '../../../components'
-import ImageSkeleton from '../../../components/skeletons/ImageSkeleton'
+import { RecipeThumbnail, ImageSkeleton } from '../../../components'
 import './explore.scss'
 
-export default function ExploreResults({favorites, getFavorites, user}) {
+export default function ExploreResults() {
 
     const currentPage = useLocation().pathname.substring(9)
     const pageStructure = currentPage.split('/')
     const pageName = pageStructure.length === 1 ? pageStructure[0][0].toUpperCase() + pageStructure[0].substring(1) : pageStructure[1][0].toUpperCase() + pageStructure[1].substring(1)
-    const [results, setResults] = useState()
+    const [results, setResults] = useState([])
 
     function getResults(){
         switch (pageStructure[0]) {
@@ -31,38 +30,43 @@ export default function ExploreResults({favorites, getFavorites, user}) {
                 .get(`http://localhost:5010/categories/popular`)
                 .then(res => setResults(res.data))
                 .catch(err => console.log(err));
+                break;
             case 'quickAndEasy':
                 axios
                 .get(`http://localhost:5010/categories/quickAndEasy`)
                 .then(res => setResults(res.data))
                 .catch(err => console.log(err));
+                break;
             case 'seasonal':
                 axios
                 .get(`http://localhost:5010/categories/seasonal`)
                 .then(res => setResults(res.data))
                 .catch(err => console.log(err));
+                break;
             case 'trending':
                 axios
                 .get('http://localhost:5010/categories/trending')
                 .then(res => setResults(res.data))
                 .catch(err => console.log(err))
+                break;
         }
     }
     useEffect(getResults, [])
+    console.log(results)
 
     let resultsDisplay;
-    if (!results){
+    if (results.length === 0){
         resultsDisplay = Array(10).fill().map(() => {
             return(
                 <ImageSkeleton width='50%' />
             )
         })
     }
-    else {
+    else if (results?.length > 0) {
         resultsDisplay = results?.map((item, index) => {
             return(
                 <div className='exploreResults_tile'>
-                    <RecipeThumbnail recipe={item} key={item._id} favorites={favorites} getFavorites={getFavorites} user={user} componentOrigin='searchResults'
+                    <RecipeThumbnail recipe={item} key={item._id} componentOrigin='searchResults'
                         recipeResults={results} setResults={setResults}
                     />
     

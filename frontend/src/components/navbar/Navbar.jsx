@@ -3,7 +3,7 @@ import {Link } from 'react-router-dom'
 import { ListIcon, SearchIcon, AddIcon, HomeIcon, ProfileIcon } from '../../assets/images'
 import './navbar.scss'
 
-function Navbar({setNavigation}){
+function Navbar(){
 
     const [currentTab, setCurrentTab] = useState('home')
 
@@ -22,7 +22,7 @@ function Navbar({setNavigation}){
                     onClick={e => setCurrentTab('submit')}>
                     <AddIcon width='30%' style={{margin: 'auto'}} color={currentTab === 'submit' ? 'black' : 'orange'}/>
                 </Link>
-                <Link to='/lists' className='navbar_element'
+                <Link to='/lists/collections' className='navbar_element'
                     onClick={e => setCurrentTab('list')}>
                     <ListIcon width='30%' style={{margin: 'auto'}} color={currentTab === 'list' ? 'black' : 'orange'}/>
                 </Link>

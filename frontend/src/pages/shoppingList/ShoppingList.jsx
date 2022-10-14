@@ -1,10 +1,14 @@
 import {useNavigate} from 'react-router-dom'
 import './shoppingList.scss'
-import { XIcon } from '../../assets/images'
+import { PlusIcon, XIcon } from '../../assets/images'
+import { useContext } from 'react'
+import { UserContext } from '../../UserContext'
 
-function ShoppingList({shoppingList, updateShoppingList}) {
+function ShoppingList() {
 
-    const recipeSet = new Set(shoppingList?.ingredients.map(item => item.recipeName))
+    const {shoppingList, updateShoppingList} = useContext(UserContext)
+
+    const recipeSet = new Set(shoppingList?.map(item => item.recipeName))
     const recipeArr = [...recipeSet]
     const nav = useNavigate()
 
@@ -12,11 +16,10 @@ function ShoppingList({shoppingList, updateShoppingList}) {
         nav(`/recipe/${recipeID}`)
     }
     
-    const recipeList = recipeArr.map((recipe, index) => {
-        const recipeIngredients = shoppingList.ingredients.filter(cartItem => cartItem.recipeName === recipe)
-        console.log(recipeIngredients)
+    const recipeList = recipeArr?.map((recipe, index) => {
+        const recipeIngredients = shoppingList.filter(cartItem => cartItem.recipeName === recipe).sort((a, b) => a.purchased - b.purchased)
         return(
-            <div>
+            <div className='shoppingList_recipe'>
                 <div className='shoppingList_recipeHeader'>
                     <div className='shoppingList_recipeName' onClick={() => navigateToRecipe(recipeIngredients[0].recipeID)}>{recipe}</div>
                     <XIcon width='5%' onClick={() => updateShoppingList('removeAll', undefined, {_id: recipeIngredients[0].recipeID})}/>
@@ -26,10 +29,17 @@ function ShoppingList({shoppingList, updateShoppingList}) {
                     return(
                         <div className='shoppingList_ingredientsList'>
                             <div className='shoppingList_ingredientsNameContainer'>
-                                <div style={{width: '.1rem', padding: '.5rem', border: ingredient.purchased ? '1px solid black' : '3px solid black'}}
-                                onClick={() => updateShoppingList('purchased', ingredient, undefined)}
-                                ></div>
-                                <p>{`${ingredient.quantity} ${ingredient.ingredientUOM ? ingredient.ingredientUOM : ''} ${ingredient.ingredientName}`}</p>
+                                {ingredient.purchased ?
+                                    <>
+                                        <XIcon width='1rem' fill='#285e82' onClick={() => updateShoppingList('purchased', ingredient, undefined)} />
+                                        <p className='shoppingList_ingredientName'>{`${ingredient.quantity} ${ingredient.ingredientUOM ? ingredient.ingredientUOM : ''} ${ingredient.ingredientName}`}</p>
+                                    </>
+                                    :
+                                    <>
+                                        <PlusIcon width='1rem' fill='#19a2b1' onClick={() => updateShoppingList('purchased', ingredient, undefined)} />
+                                        <p>{`${ingredient.quantity} ${ingredient.ingredientUOM ? ingredient.ingredientUOM : ''} ${ingredient.ingredientName}`}</p>
+                                    </>
+                                }
                             </div>
                             <XIcon width='5%' onClick={() => updateShoppingList('remove', ingredient, undefined)}/>
                         </div>

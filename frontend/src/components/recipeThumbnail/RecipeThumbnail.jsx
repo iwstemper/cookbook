@@ -1,18 +1,22 @@
 import './recipeThumbnail.scss'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {useState, useEffect} from 'react'
 import {PlusIcon} from '../../assets/images/index'
 import axios from 'axios'
 import {formatCookTime} from '../../utils/formatCookTime'
+import { UserContext } from '../../UserContext'
+import { useAuth0 } from '@auth0/auth0-react'
 
-function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavorites, user, recipeResults, setResults}) {
+function RecipeThumbnail({setRecipe, recipe, componentOrigin, recipeResults, setResults}) {
 
+    const {getFavorites, favorites} = useContext(UserContext)
+    const {user} = useAuth0()
     //Navigates to recipe if on the search results page
     const navigator = useNavigate()
     const navigateToRecipe = (e) => {
         e.preventDefault()
         console.log(e.target.className)
-        if (componentOrigin === 'searchResults' && e.target.parentNode.className !== 'recipePage_addIcon' && e.target.className.baseVal !== 'recipePage_addIcon' && e.target.className.baseVal !== 'addRecipe_icon' && e.target.className !== 'recipeHeader_favoriteCount'){
+        if (componentOrigin === 'searchResults' && e.target.className.baseVal !== 'recipePage_addIcon' && e.target.className !== 'recipeHeader_favoriteCount'){
             navigator(`/recipe/${recipe._id}`)
         }
     }
@@ -47,8 +51,11 @@ function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavo
         .catch(err => console.log(err))
     }
 
+    let totalTime
     //Formats cooktime display
-    let totalTime = formatCookTime(recipe)
+    if (recipe.cookTime){
+        totalTime = formatCookTime(recipe)
+    }
 
     //Adds or remove favorite depending on current state
     let clickFunction = favorites?.find(item => item.recipeID === recipe._id) ? 'remove' : 'add'
@@ -75,7 +82,6 @@ function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavo
             }
         </div>
     }
-
     return(
         <div className='recipe_headerImage' onClick={e => navigateToRecipe(e)} >
                 <img src={recipe.imageURL ? recipe.imageURL : 'https://wtwp.com/wp-content/uploads/2015/06/placeholder-image-300x225.png'}/>
@@ -97,11 +103,11 @@ function RecipeThumbnail({setRecipe, recipe, componentOrigin, favorites, getFavo
                         </div>
                         <div className='recipe_headerFlexLine'>
                             <div className='recipe_headerFlexItem'>
-                                <p>{recipe.ingredients.length} <span>Ingredient{recipe.ingredients.length > 1 ? 's' : ''}</span></p>
+                                <p>{recipe?.ingredients?.length} <span>Ingredient{recipe?.ingredients?.length > 1 ? 's' : ''}</span></p>
                             </div>
                             <p>|</p>
                             <div className='recipe_headerFlexItem'>
-                                <p>{totalTime.totalHrs > 0 && `${totalTime.totalHrs} hours`} {totalTime.totalMins > 0 && `${totalTime.totalMins} mins`}
+                                <p>{totalTime?.totalHrs > 0 && `${totalTime.totalHrs} hours`} {totalTime?.totalMins > 0 && `${totalTime.totalMins} mins`}
                                 </p>
                             </div>
                             <p>|</p>

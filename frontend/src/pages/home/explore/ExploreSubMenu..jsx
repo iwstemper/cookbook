@@ -3,13 +3,13 @@ import './explore.scss'
 import {useLocation} from 'react-router-dom'
 import ExploreTile from './ExploreTile'
 import axios from 'axios'
-import ImageSkeleton from '../../../components/skeletons/ImageSkeleton'
+import {ImageSkeleton} from '../../../components'
 
 function ExploreSubMenu() {
 
     const [categories, setCategories] = useState()
     let category = useLocation().pathname.substring(9)
-    console.log(category)
+
     useEffect(() =>{
         axios
         .get(`http://localhost:5010/categories/${category}`)

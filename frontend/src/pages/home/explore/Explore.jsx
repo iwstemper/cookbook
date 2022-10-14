@@ -5,10 +5,12 @@ import React from 'react'
 import ExploreSubMenu from './ExploreSubMenu.'
 import ExploreResults from './ExploreResults'
 
-function Explore({getFavorites, favorites, user}) {
+function Explore() {
 
+  //Gets URL path to determine which tiles to display
   let currentPage = useLocation().pathname.substring(9)
 
+  //Initial page load options
   const data = [
     {name: 'Quick & Easy', img: '', url: 'quickAndEasy'},
     {name: 'Trending', img: '', url: 'trending'},
@@ -18,6 +20,7 @@ function Explore({getFavorites, favorites, user}) {
     {name: 'Popular', img: '', url: 'popular'}
   ]
 
+  //Maps explore tile components to page looad options
   let exploreTiles;
       exploreTiles = data.map((item, index) => {
         return(
@@ -26,19 +29,22 @@ function Explore({getFavorites, favorites, user}) {
     })
 
     switch (currentPage){
+      //Initial page load content if URL substring is empty
       case '':
         return (
           <div className='explore'>
             {exploreTiles}
           </div>
         )
+
+      //Displays results for sections without submenus
       case 'trending':
       case 'quickAndEasy':
       case 'Seasonal':
       case 'popular':
         return (
           <div>
-            <ExploreResults getFavorites={getFavorites} favorites={favorites} user={user}/>
+            <ExploreResults />
           </div>
         )
       case 'courses':
@@ -48,7 +54,7 @@ function Explore({getFavorites, favorites, user}) {
         )
       default:
         return(
-          <ExploreResults getFavorites={getFavorites} favorites={favorites} user={user}/>
+          <ExploreResults />
         )
     }
 }

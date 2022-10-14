@@ -61,6 +61,7 @@ recipeRouter.get('/:id', (req,res) => {
         if (err){
             console.log(err)
         }
+        console.log(record)
         res.json(record)
     })
 })

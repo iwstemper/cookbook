@@ -84,10 +84,11 @@ $disabledColor: #cccbcb;
             color: $accentTextColor;
             height: 6rem;
             .collectionItem_name{
-                font-size: 2rem;
+                font-size: 1.5rem;
                 font-weight: bold;
                 padding-left: .5rem;
                 overflow: scroll;
+                max-height: 90%;
             }
             .collectionItem_rightContent{
                 text-align: center;

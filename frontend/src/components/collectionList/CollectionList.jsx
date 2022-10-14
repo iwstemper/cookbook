@@ -1,17 +1,20 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import './collectionList.scss'
 import { SearchIcon, CrossIcon } from "../../assets/images";
-import CollectionListItem from "./CollectionListItem";
-import DialogueModal from "../modal/DialogueModal";
-import ActionModal from "../modal/ActionModal";
+import {DialogueModal, ActionModal, CollectionListItem, SpinnerOverlay} from '../';
+import { UserContext } from "../../UserContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function CollectionList({listDisplay, user, collections, getCollections, recipe, parentRequest, popup, setPopup, getMealPlans, mealPlans}){
+export default function CollectionList({recipe, popup, setPopup}){
 
+    const {collections, mealPlans, getCollections, getMealPlans} = useContext(UserContext)
+    const {user} = useAuth0()
 
     const [searchInput, setSearchInput] = useState('')
     const [dialogueModal, setDialogueModal] = useState({active: false, modalText: ''})
     const [actionModal, setActionModal] = useState({active: false})
+    const [spinnerOverlay, setOverlay] = useState(false)
 
     //Checks collection or meal plan for recipe before adding
     function checkForDuplicateAddition(collectionType, item){
@@ -48,9 +51,11 @@ export default function CollectionList({listDisplay, user, collections, getColle
         }
 
     function addToCollection(id){
+        setOverlay(true)
         axios
         .put(`http://localhost:5010/collections/${id}`, {inputs: {recipe: recipe, operation: 'add'}})
         .then(() => getCollections())
+        .then(() => setOverlay(false))
         .then(() => {
             setDialogueModal({active: true, modalText: 'Recipe added to collection'})
                 setTimeout(() => {
@@ -64,6 +69,7 @@ export default function CollectionList({listDisplay, user, collections, getColle
         axios
         .post(`http://localhost:5010/collections/${user.email}`, {inputs: name})
         .then(() => getCollections())
+        .then(() => setOverlay(false))
         .then(() => {
             setDialogueModal({active: true, modalText: 'Collection created'})
             setTimeout(() => {
@@ -72,17 +78,14 @@ export default function CollectionList({listDisplay, user, collections, getColle
         })
         .catch(err => console.log(err))
     }
-    function removeCollection(id){
-        axios
-        .delete(`http://localhost:5010/collections/${id}`)
-        .then(() => getCollections())
-        .catch(err => console.log(err))
-    }
+
 
     function addToMealPlan(id){
+        setOverlay(true)
         axios
         .put(`http://localhost:5010/mealPlans/${id}`, {inputs: {recipe: recipe, operation: 'add'}})
         .then(() => getMealPlans())
+        .then(() => setOverlay(false))
         .then(() => {
             setDialogueModal({active: true, modalText: 'Recipe added to meal plan'})
                 setTimeout(() => {
@@ -93,21 +96,17 @@ export default function CollectionList({listDisplay, user, collections, getColle
         .catch(err => console.log(err))
     }
     function addMealPlan(name){
+        setOverlay(true)
         axios
         .post(`http://localhost:5010/mealPlans/${user.email}`, {inputs: name})
         .then(() => getMealPlans())
+        .then(() => setOverlay(false))
         .then(() => {
             setDialogueModal({active: true, modalText: 'Meal plan created'})
             setTimeout(() => {
                 setDialogueModal({active: false})
             }, 1500);
         })
-        .catch(err => console.log(err))
-    }
-    function removeMealPlan(id){
-        axios
-        .delete(`http://localhost:5010/mealPlans/${id}`)
-        .then(() => getCollections())
         .catch(err => console.log(err))
     }
 
@@ -124,10 +123,10 @@ export default function CollectionList({listDisplay, user, collections, getColle
         )
     })
     
-    if (listDisplay === 'popup'){
         if (popup.popupContent === 'Meal Plan'){
             return(
                 <div className='collectionList_popup' onClick={e => e.target.className === 'collectionList_popup' ? setPopup({active: false}) : null}>
+                    {spinnerOverlay && <SpinnerOverlay/>}
                     <div className='popupMenu'>
                         <div className='collectionList'>
                             <DialogueModal modal={dialogueModal} setModal={setDialogueModal} />
@@ -153,6 +152,7 @@ export default function CollectionList({listDisplay, user, collections, getColle
         else if (popup.popupContent === 'Collection'){
             return(
                 <div className='collectionList_popup' onClick={e => e.target.className === 'collectionList_popup' ? setPopup({active: false}) : null}>
+                    {spinnerOverlay && <SpinnerOverlay/>}
                     <div className='popupMenu'>
                         <div className='collectionList'>
                             <DialogueModal modal={dialogueModal} setModal={setDialogueModal} />
@@ -175,46 +175,4 @@ export default function CollectionList({listDisplay, user, collections, getColle
                 </div>
             )
         }
-    }
-
-    if (popup.popupContent === 'collections' || !popup.popupContent){
-        return(
-            <div className='collectionList'>
-                <DialogueModal modal={dialogueModal} setModal={setDialogueModal} />
-                <ActionModal modal={actionModal} setModal={setActionModal} modalFunction={addCollection} modalType={'Collection'} />
-                <div className='collectionList_header'>
-                    <div className='collectionList_searchInput'>
-                        <SearchIcon height='100%' className='collectionList_searchIcon' onClick={() => document.getElementById('collectionList_searchInput').focus()}/>
-                        <input name='searchInput' id='collectionList_searchInput' value={searchInput} onChange={e => setSearchInput(e.target.value)} />
-                    </div>
-                    <div className='collectionList_headerRightContent' onClick={() => setActionModal({active: true})}>
-                        <p>+ New Collection</p>
-                    </div>
-                </div>
-                <div className='collectionList_rows'>
-                    {collectionRow}
-                </div>
-            </div>
-        )
-    }
-    else if (popup.popupContent === 'mealPlans'){
-        return(
-            <div className='collectionList'>
-                <DialogueModal modal={dialogueModal} setModal={setDialogueModal} />
-                <ActionModal modal={actionModal} setModal={setActionModal} modalFunction={addMealPlan} modalType={'Meal plan'}/>
-                <div className='collectionList_header'>
-                    <div className='collectionList_searchInput'>
-                        <SearchIcon height='100%' className='collectionList_searchIcon' onClick={() => document.getElementById('collectionList_searchInput').focus()}/>
-                        <input name='searchInput' id='collectionList_searchInput' value={searchInput} onChange={e => setSearchInput(e.target.value)} />
-                    </div>
-                    <div className='collectionList_headerRightContent' onClick={() => setActionModal({active: true})}>
-                        <p>+ New Meal Plan</p>
-                    </div>
-                </div>
-                <div className='collectionList_rows'>
-                    {mealPlanRow}
-                </div>
-            </div>
-        )
-    }
 }

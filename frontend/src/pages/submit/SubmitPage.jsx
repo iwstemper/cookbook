@@ -23,11 +23,12 @@ function SubmitPage(){
         servings: 0,
         prepTime: {mins:0, hrs: 0}, 
         cookTime: {mins: 0, hrs: 0},
-        ingredients: [{ingredientName: '', unitOfMeasure: '', quantity: 0}],
+        ingredients: [{ingredientName: '', quantity: 0}],
         instructions: [''],
         notes: ['']
     })
 
+    //
     const handleFileChange = e => {
         const file = e.target.files[0]
         previewFile(file)
@@ -35,6 +36,7 @@ function SubmitPage(){
         setFileInput(e.target.value)
     }
 
+    //
     const previewFile = file => {
         const reader = new FileReader()
         reader.readAsDataURL(file)
@@ -56,8 +58,8 @@ function SubmitPage(){
         }
     }
 
+    //Sends 
     const uploadRecipe = async (image) => {
-        console.log('running')
         try{
             await fetch('http://10.79.165.172:5010/recipe', {
                 method: 'POST',

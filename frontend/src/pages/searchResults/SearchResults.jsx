@@ -1,14 +1,17 @@
 import axios from 'axios'
 import {useEffect, useState} from 'react'
 import {useNavigate, useParams, useLocation} from 'react-router-dom'
-import {RecipeThumbnail} from '../../components'
-import ImageSkeleton from '../../components/skeletons/ImageSkeleton'
+import {RecipeThumbnail, ImageSkeleton} from '../../components'
 import './searchResults.scss'
 
-function SearchResults({updateRecipes, recipeList, user, favorites, getFavorites}) {
+function SearchResults() {
     const urlParams = useParams()
     const navigator = useNavigate()
     const currentURL = useLocation().pathname
+
+    const [recipeResults, setResults] = useState()
+
+    //Updates query params
     function navigate(){
         navigator(currentURL + `/secondParam=secondValue`)
     }
@@ -20,9 +23,8 @@ function SearchResults({updateRecipes, recipeList, user, favorites, getFavorites
         paramsObj[`${newParam[0]}`] = newParam[1]        
     }
     
-    const [recipeResults, setResults] = useState()
+    //Gets recipe results when 
     const getRecipes = () => {
-        
         axios
         .get('http://localhost:5010/recipe', {params: {filters: paramsObj}})
         .then(res => setResults(res.data))
@@ -43,9 +45,8 @@ function SearchResults({updateRecipes, recipeList, user, favorites, getFavorites
         resultsDisplay = recipeResults?.map((item, index) => {
         return(
             <div className='searchResults_result'>
-                <RecipeThumbnail recipeResults={recipeResults} setResults={setResults} favorites={favorites} 
-                                getFavorites={getFavorites} user={user} key={index} recipe={item} componentOrigin='searchResults' 
-                                updateRecipes={updateRecipes} recipeList={recipeList}
+                <RecipeThumbnail recipeResults={recipeResults} setResults={setResults} 
+                                key={index} recipe={item} componentOrigin='searchResults' 
                 />
             </div>
                 )

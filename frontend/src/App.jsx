@@ -1,103 +1,52 @@
-import { useState } from 'react'
 import './App.scss'
-import {Homepage, SearchPage, SubmitPage, SearchResults, RecipePage, ListsPage, Profile} from './pages'
-import Explore from './pages/home/explore/Explore'
-import Trending from './pages/home/Trending'
-import ForYou from './pages/home/ForYou'
+import {Homepage, SearchPage, SubmitPage, SearchResults, RecipePage, ListsPage, Profile, ShoppingList, Explore, Trending, ForYou} from './pages'
+import { RecipeList } from './components'
 import { Navbar } from './components'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import {useAuth0} from '@auth0/auth0-react'
 import TopNavbar from './components/navbar/TopNavbar'
-import { useEffect } from 'react'
-import axios from 'axios'
+import { UserContextProvider} from './UserContext'
 
 function App() {
 
-  const {user, isLoading, isAuthenticated} = useAuth0()
-  const [userProfile, setUserProfile] = useState({})
-  const [shoppingList, setShoppingList] = useState({})
-  const [collections, setCollections] = useState([])
-  const [mealPlans, setMealPlans] = useState([])
-  const [favorites, setFavorites] = useState([])
-
-  
-  function getShoppingList(){
-      axios
-      .get(`http://localhost:5010/shoppingList/${user.name}`)
-      .then(res => setShoppingList(res.data))
-      .catch(err => console.log(err))
-  }
-  function getCollections(){
-    axios
-    .get(`http://localhost:5010/collections/${user.name}`)
-    .then(res => setCollections(res.data))
-    .catch(err => console.log(err))
-  } 
-  function getMealPlans(){
-    axios
-    .get(`http://localhost:5010/mealPlans/${user.name}`)
-    .then(res => setMealPlans(res.data))
-    .catch(err => console.log(err))
-  }
-  function getFavorites(){
-    axios
-    .get(`http://localhost:5010/favorites/${user.name}`)
-    .then(res => setFavorites(res.data))
-    .catch(err => console.log(err))
-  }
-  useEffect(() => {
-    if (isAuthenticated){
-      setUserProfile(user)
-      getShoppingList()
-      getCollections()
-      getMealPlans()
-      getFavorites()
-    }
-    else{
-      return
-    }
-  }, [isAuthenticated])
-
-  //Updates shoppingList state after server update
-  function updateShoppingList(operation, ingredient, recipe){
-    axios
-    .put(`http://localhost:5010/shoppingList/${user.email}`, {inputs: {recipe: recipe, operation: operation, ingredient: ingredient}})
-    .then(res => {
-      console.log(res)
-    })
-    .then(() => getShoppingList())
-    .catch(err => console.log(err))
-  }
+  //Authentication
+  const {isLoading, isAuthenticated} = useAuth0()
 
   return (
     <div className="App">
-      <BrowserRouter>
-        {!isAuthenticated && !isLoading &&<TopNavbar/>}
-        <Navbar/>
-        <Routes>
-            <Route path={'/'} element={<Homepage />}>
-              <Route path='explore' element={<Explore getFavorites={getFavorites} favorites={favorites} user={user}/>}>
-                <Route path=':id' element={<Explore  getFavorites={getFavorites} favorites={favorites} user={user}/>}>
-                  <Route path=':id' element={<Explore getFavorites={getFavorites} favorites={favorites} user={user}/>}/>
+      <UserContextProvider>
+        <BrowserRouter>
+          {!isAuthenticated && !isLoading &&<TopNavbar/>}
+          <Navbar/>
+          <Routes>
+              <Route path={'/'} element={<Homepage />}>
+                <Route path='explore' element={<Explore />}>
+                  <Route path=':id' element={<Explore />}>
+                    <Route path=':id' element={<Explore />}/>
+                  </Route>
                 </Route>
+                <Route path='trending' element={<Trending />}/>
+                <Route path='foryou' element={<ForYou />}/>
               </Route>
-              <Route path='trending' element={<Trending />}/>
-              <Route path='foryou' element={<ForYou />}/>
-            </Route>
-            <Route path='/submit' element={<SubmitPage />}/>
-            <Route path='/search'>
-              <Route index element={<SearchPage/>}/>
-              <Route path=':query1' element={<SearchResults user={user} favorites={favorites} getFavorites={getFavorites}/>}/>
-              <Route path=':query1/:query2' element={<SearchResults user={user} favorites={favorites} getFavorites={getFavorites}/>}/>
-            </Route>
-            <Route path='/recipe'>
-              <Route path=':id' element={<RecipePage favorites={favorites} getFavorites={getFavorites} mealPlans={mealPlans} getMealPlans={getMealPlans} collections={collections} getCollections={getCollections} shoppingList={shoppingList} updateShoppingList={updateShoppingList} user={userProfile}/>}/>
-            </Route>
-            <Route path='lists' element={<ListsPage user={user} getCollections={getCollections} getMealPlans={getMealPlans} mealPlans={mealPlans} collections={collections} shoppingList={shoppingList} updateShoppingList={updateShoppingList}/>}/>
-            <Route path='/profile' element={<Profile mealPlans={mealPlans} getMealPlans={getMealPlans} user={userProfile} collections={collections} getCollections={getCollections}/>}/>
-        </Routes>
-        
-      </BrowserRouter>
+              <Route path='/submit' element={<SubmitPage />}/>
+              <Route path='/search'>
+                <Route index element={<SearchPage/>}/>
+                <Route path=':query1' element={<SearchResults />}/>
+                <Route path=':query1/:query2' element={<SearchResults />}/>
+              </Route>
+              <Route path='/recipe'>
+                <Route path=':id' element={<RecipePage />}/>
+              </Route>
+              <Route path='lists' element={<ListsPage />}>
+                <Route path='Shopping%20List' element={<ShoppingList   />} />
+                <Route path='Meal%20Plans' element={<RecipeList listType='Meal Plan'/>} />
+                <Route path='collections' element={<RecipeList listType='Collection'/>} />
+              </Route> 
+              <Route path='/profile' element={<Profile />}/>
+          </Routes>
+          
+        </BrowserRouter>
+      </UserContextProvider>
     </div>
   )
 }

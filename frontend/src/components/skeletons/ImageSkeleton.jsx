@@ -5,8 +5,7 @@ export default function ImageSkeleton(props) {
   return (
     <ContentLoader 
     speed={1}
-    width={props.width}
-    style={{aspectRatio: '1/1'}}
+    style={{aspectRatio: props.aspectRatio ? props.aspectRatio : '1/1'}}
     viewBox="0 0 500 500"
     backgroundColor="#f3f3f3"
     foregroundColor="#ecebeb"

@@ -1,8 +1,7 @@
 import React from 'react'
 import './modal.scss'
-import {CrossIcon} from '../../assets/images'
 
-function DialogueModal({modal, setModal}) {
+function DialogueModal({modal}) {
     if (modal.active){
         return (
             <div className='modal_overlay modal_overlay-active'>

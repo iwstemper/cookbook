@@ -3,6 +3,7 @@ import './profile.scss'
 
 export default function ProfileHero({user}){
 
+
     return(
         <div className='profile_userHero'>
             <img src={user.picture} />

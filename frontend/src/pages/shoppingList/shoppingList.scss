@@ -1,14 +1,21 @@
 @use '../../global';
 
+.shoppingList_recipe{
+    margin-bottom: 1.5rem;
+}
 .shoppingList_recipeHeader{
     display: flex;
     justify-content: space-between;
     padding: .5rem;
     .shoppingList_recipeName{
         color: global.$darkBlue;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: bold;
         margin: auto;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 95%;
     }
 
 }
@@ -18,11 +25,17 @@
     justify-content: space-between;
     .shoppingList_ingredientsNameContainer{
         display: flex;
-        gap: 1rem;
+        gap: .5rem;
         max-width: 90%;
         p{
             overflow: hidden;
             white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 90%;
+            font-weight: 600;
+        }
+        .shoppingList_ingredientName{
+            text-decoration: line-through;
         }
     }
 }

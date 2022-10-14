@@ -4,10 +4,10 @@
 .listsPage_navTabs{
     display: flex;
     justify-content: space-between;
-    margin: 2rem .5rem;
+    margin: 2rem 0.5rem;
     button{
         @include global.buttonStyle;
-        width: 30%
+        width: 32%
         
     }
     .listButton-selected{
@@ -16,7 +16,9 @@
     }
     
 }
-
+.listsPage{
+    margin-bottom: 8vh;
+}
 @media screen and (max-width: 430px) {
     button{
         font-size: .75rem;

@@ -7,12 +7,21 @@
     width: 100%;
     position:relative; 
     input{
+        position: relative;
         width: 100%;
         height: 3rem;
-        border: 0;
+        border: 2px solid black;
+        border-radius: 40px;
         padding-left: 1rem;
         color: gray;
         font-size: 1.5rem;
+    }
+    .searchPage_searchIcon{
+        position: absolute;
+        right: 0;
+        height: 100%;
+        padding: .75rem;
+        margin-right: 1rem;
     }
     
 }
@@ -25,7 +34,12 @@
         gap: .5rem;
         margin: 1rem 0;
         .searchPage_ingredientsItem{
-            @include global.lightBlueButton
+            @include global.lightBlueButton;
+            max-width: 40%;
+            p{
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
         }
         .searchPage_ingredientsItem.searchPage_ingredientsItem-selected{
             @include global.lightBlueContrastButton;

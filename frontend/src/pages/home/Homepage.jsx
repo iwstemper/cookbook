@@ -4,7 +4,10 @@ import {useNavigate, useLocation, Outlet} from 'react-router-dom'
 
 function Homepage(){
 
+    //Gets outlet page from URL for class selection
     const [page, setPage] = useState(useLocation().pathname.slice(1))
+
+    //Navigates on header link click
     const nav = useNavigate()
     function navigate(location){
         setPage(location.slice(1))
